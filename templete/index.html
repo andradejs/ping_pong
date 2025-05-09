@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Retro</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="500" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function desenharJogo(estado) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Raquete 1
+            ctx.fillStyle = "blue";
+            ctx.fillRect(0, estado.raquete1Y, 10, 60);
+
+            // Raquete 2
+            ctx.fillStyle = "red";
+            ctx.fillRect(canvas.width - 10, estado.raquete2Y, 10, 60);
+
+            // Bola
+            ctx.fillStyle = "black";
+            ctx.beginPath();
+            ctx.arc(estado.bolaX, estado.bolaY, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pontuação
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.fillText(`Jogador 1: ${estado.pontuacao1}`, 50, 20);
+            ctx.fillText(`Jogador 2: ${estado.pontuacao2}`, canvas.width - 150, 20);
+        }
+
+        async function atualizarJogo() {
+            const response = await fetch('/estado');
+            const estado = await response.json();
+            desenharJogo(estado);
+            requestAnimationFrame(atualizarJogo);
+        }
+
+        atualizarJogo();
+    </script>
+</body>
+</html>
