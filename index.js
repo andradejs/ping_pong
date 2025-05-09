@@ -103,7 +103,7 @@ app.get("/estado", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "templete", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 setInterval(atualizarJogo, 50);
